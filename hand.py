@@ -15,8 +15,7 @@ class Hand:
         self.outline[-150:, :150, 1] = self.binary
 
     def draw_outline(self, min_area=10000, color=(0, 255, 0), thickness=2):
-        contours, _ = cv2.findContours(
-            self.binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(self.binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         palm_area = 0
         flag = None
         for (i, c) in enumerate(contours):
@@ -39,8 +38,10 @@ class Hand:
         size = max(w, h)
         y_start = int(y - size / 2 + h / 2)
         x_start = int(x - size / 2 + w / 2)
-        cropped = orig[max(0, y_start):min(orig.shape[1] - 1, y_start + size),
-                       max(0, x_start):max(orig.shape[0] - 1, x_start + size)]
+        cropped = orig[
+            max(0, y_start) : min(orig.shape[1] - 1, y_start + size),
+            max(0, x_start) : max(orig.shape[0] - 1, x_start + size),
+        ]
         return cv2.resize(cropped, (150, 150))
 
     def extract_fingertips(self, filter_value=50):
